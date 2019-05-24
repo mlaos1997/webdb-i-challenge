@@ -53,7 +53,7 @@ router.delete('/:id', async(req, res) => {
         } else {
             res
                 .status(201)
-                .json()
+                .json({message: 'Account has been deleted'})
         }
     } catch (err) {
         res
@@ -84,20 +84,27 @@ router.post('/', async(req, res) => {
 
 router.put('/:id', async(req, res) => {
     try {
-        const { id } = req.params;
-        const { name, budget } = req.body;
-        if(!name || !budget) {
-            res.status(400).json({ message: 'Please provide name and budget for account'});
+        const {id} = req.params;
+        const {name, budget} = req.body;
+        if (!name || !budget) {
+            res
+                .status(400)
+                .json({message: 'Please provide name and budget for account'});
         } else if (!id) {
-            res.status(404).json({ message: 'Account with specified ID does not exist' });
-        } else{
+            res
+                .status(404)
+                .json({message: 'Account with specified ID does not exist'});
+        } else {
             const updatedAccount = await accountDb.update(id, {name, budget});
-            res.status(200).json({ message: 'Account has been updated'});
+            res
+                .status(200)
+                .json({message: 'Account has been updated'});
         }
     } catch (err) {
-        res.status(500).json({ err });
+        res
+            .status(500)
+            .json({err});
     }
 });
-
 
 module.exports = router;
